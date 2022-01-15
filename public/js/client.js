@@ -3,8 +3,6 @@ const buttonEl = document.getElementById('button');
 const messageEl = document.getElementById('message');
 const titleEl = document.getElementById('real-time-title');
 
-// set initial state of application variables
-messageEl.style.display = 'none';
 let isRecording = false;
 let socket;
 let recorder;
@@ -63,7 +61,6 @@ const run = async () => {
 
         socket.onopen = () => {
             // once socket is open, begin recording
-            messageEl.style.display = '';
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then((stream) => {
                     recorder = new RecordRTC(stream, {
