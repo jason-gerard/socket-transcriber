@@ -21,12 +21,16 @@ app.get('/token', async (req, res) => {
     }
 });
 
-app.get('/', async (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
+app.get('/speaker', async (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/speaker-page.html'));
+});
+
+app.get('/listener', async (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/listener-page.html'));
 });
 
 app.get('/room-select', async (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/room-select.html'));
+    res.sendFile(path.join(__dirname + '/public/room-select-page.html'));
 });
 
 app.set('port', 5000);
