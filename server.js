@@ -35,12 +35,14 @@ app.get('/token', async (req, res) => {
 
 app.get('/:roomId/speaker', async (req, res) => {
     res.render("speaker-page", {
+        host: req.get('host'),
         roomId: req.params.roomId
     });
 });
 
 app.get('/:roomId/listener', async (req, res) => {
     res.render("listener-page", {
+        host: req.get('host'),
         roomId: req.params.roomId
     });
 });

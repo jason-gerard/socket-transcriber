@@ -6,7 +6,7 @@ let transcriptionSocket;
 let recorder;
 
 const roomIdEl = document.getElementById("room-id");
-const broadcastSocket = new WebSocket(`ws://localhost:5000?roomId=${roomIdEl.dataset.roomId}`);
+const broadcastSocket = new WebSocket(`ws://${roomIdEl.dataset.host}?roomId=${roomIdEl.dataset.roomId}`);
 
 const run = async () => {
     if (isRecording) {
@@ -21,7 +21,7 @@ const run = async () => {
             recorder = null;
         }
     } else {
-        const response = await fetch('http://localhost:5000/token'); // get temp session token from server.js (backend)
+        const response = await fetch(`http://${roomIdEl.dataset.host}/token`); // get temp session token from server.js (backend)
         const data = await response.json();
 
         if(data.error){
