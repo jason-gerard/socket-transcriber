@@ -42,7 +42,7 @@ app.get('/:roomId/listener', async (req, res) => {
     });
 });
 
-app.get('/room-select', async (req, res) => {
+app.get('/', async (req, res) => {
     res.render("room-select-page");
 });
 
