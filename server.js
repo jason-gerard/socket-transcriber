@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 const http = require("http");
 const websocket = require("ws");
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 
@@ -19,7 +22,7 @@ app.get('/token', async (req, res) => {
         const { data } = await axios.post(
             'https://api.assemblyai.com/v2/realtime/token',
             { expires_in: 3600 },
-            { headers: { authorization: 'fc387af2eb7b4ad38b6c4067885d43db' } }
+            { headers: { authorization: process.env.API_TOKEN } }
         );
 
         res.json(data);
