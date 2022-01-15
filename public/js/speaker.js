@@ -5,7 +5,8 @@ let isRecording = false;
 let transcriptionSocket;
 let recorder;
 
-const broadcastSocket = new WebSocket("ws://localhost:5000");
+const roomIdEl = document.getElementById("room-id");
+const broadcastSocket = new WebSocket(`ws://localhost:5000?roomId=${roomIdEl.dataset.roomId}`);
 
 const run = async () => {
     if (isRecording) {
