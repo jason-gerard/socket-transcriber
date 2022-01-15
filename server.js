@@ -6,8 +6,13 @@ const http = require("http");
 const websocket = require("ws");
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
+app.use(express.static('public'));
+
+app.set('view engine', 'ejs');
+app.set('port', 5000);
 
 app.get('/token', async (req, res) => {
     try {
@@ -26,19 +31,16 @@ app.get('/token', async (req, res) => {
 });
 
 app.get('/speaker', async (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/speaker-page.html'));
+    res.render("speaker-page");
 });
 
 app.get('/listener', async (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/listener-page.html'));
+    res.render("listener-page");
 });
 
 app.get('/room-select', async (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/room-select-page.html'));
+    res.render("room-select-page");
 });
-
-app.set('port', 5000);
-app.use(express.static('public'));
 
 const server = http.createServer(app);
 
