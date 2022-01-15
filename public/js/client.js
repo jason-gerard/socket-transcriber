@@ -1,7 +1,6 @@
 // required dom elements
 const buttonEl = document.getElementById('button');
 const messageEl = document.getElementById('message');
-const titleEl = document.getElementById('real-time-title');
 
 let isRecording = false;
 let socket;
@@ -21,7 +20,7 @@ const run = async () => {
             recorder = null;
         }
     } else {
-        const response = await fetch('http://localhost:5000'); // get temp session token from server.js (backend)
+        const response = await fetch('http://localhost:5000/token'); // get temp session token from server.js (backend)
         const data = await response.json();
 
         if(data.error){
@@ -94,7 +93,6 @@ const run = async () => {
 
     isRecording = !isRecording;
     buttonEl.innerText = isRecording ? 'Stop' : 'Record';
-    titleEl.innerText = isRecording ? 'Click stop to end recording!' : 'Click start to begin recording!'
 };
 
 buttonEl.addEventListener('click', () => run());
