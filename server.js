@@ -25,6 +25,10 @@ app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
+app.get('/room-select', async (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/room-select.html'));
+});
+
 app.set('port', 5000);
 app.use(express.static('public'));
 

@@ -92,7 +92,7 @@ const run = async () => {
     }
 
     isRecording = !isRecording;
-    buttonEl.innerText = isRecording ? 'Stop' : 'Record';
+    buttonEl.innerText = isRecording ? 'Stop' : 'Start';
 };
 
 buttonEl.addEventListener('click', () => run());
