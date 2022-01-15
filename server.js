@@ -45,13 +45,12 @@ const server = http.createServer(app);
 const wss = new websocket.WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
-    ws.on('message', (m) => {
-        wss.clients
-            .forEach(client => {
-                if (client !== ws) {
-                    client.send(`broadcast message -> ${m}`);
-                }
-            });
+    ws.on('message', (message) => {
+        wss.clients.forEach(client => {
+            if (client !== ws) {
+                client.send(message.toString());
+            }
+        });
     });
 });
 

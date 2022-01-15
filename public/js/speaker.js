@@ -1,18 +1,18 @@
-// required dom elements
 const buttonEl = document.getElementById('button');
 const messageEl = document.getElementById('message');
 
 let isRecording = false;
-let socket;
+let transcriptionSocket;
 let recorder;
 
-// runs real-time transcription and handles global variables
+const broadcastSocket = new WebSocket("ws://localhost:5000");
+
 const run = async () => {
     if (isRecording) {
-        if (socket) {
-            socket.send(JSON.stringify({terminate_session: true}));
-            socket.close();
-            socket = null;
+        if (transcriptionSocket) {
+            transcriptionSocket.send(JSON.stringify({terminate_session: true}));
+            transcriptionSocket.close();
+            transcriptionSocket = null;
         }
 
         if (recorder) {
@@ -30,11 +30,11 @@ const run = async () => {
         const { token } = data;
 
         // establish wss with AssemblyAI (AAI) at 16000 sample rate
-        socket = await new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000&token=${token}`);
+        transcriptionSocket = await new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000&token=${token}`);
 
         // handle incoming messages to display transcription to the DOM
         const texts = {};
-        socket.onmessage = (message) => {
+        transcriptionSocket.onmessage = (message) => {
             let msg = '';
             const res = JSON.parse(message.data);
             texts[res.audio_start] = res.text;
@@ -46,19 +46,20 @@ const run = async () => {
                 }
             }
             messageEl.innerText = msg;
+            broadcastSocket.send(msg);
         };
 
-        socket.onerror = (event) => {
+        transcriptionSocket.onerror = (event) => {
             console.error(event);
-            socket.close();
+            transcriptionSocket.close();
         }
 
-        socket.onclose = event => {
+        transcriptionSocket.onclose = event => {
             console.log(event);
-            socket = null;
+            transcriptionSocket = null;
         }
 
-        socket.onopen = () => {
+        transcriptionSocket.onopen = () => {
             // once socket is open, begin recording
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then((stream) => {
@@ -77,8 +78,8 @@ const run = async () => {
                                 const base64data = reader.result;
 
                                 // audio data must be sent as a base64 encoded string
-                                if (socket) {
-                                    socket.send(JSON.stringify({ audio_data: base64data.split('base64,')[1] }));
+                                if (transcriptionSocket) {
+                                    transcriptionSocket.send(JSON.stringify({ audio_data: base64data.split('base64,')[1] }));
                                 }
                             };
                             reader.readAsDataURL(blob);
