@@ -30,12 +30,16 @@ app.get('/token', async (req, res) => {
     }
 });
 
-app.get('/speaker', async (req, res) => {
-    res.render("speaker-page");
+app.get('/:roomId/speaker', async (req, res) => {
+    res.render("speaker-page", {
+        roomId: req.params.roomId
+    });
 });
 
-app.get('/listener', async (req, res) => {
-    res.render("listener-page");
+app.get('/:roomId/listener', async (req, res) => {
+    res.render("listener-page", {
+        roomId: req.params.roomId
+    });
 });
 
 app.get('/room-select', async (req, res) => {
